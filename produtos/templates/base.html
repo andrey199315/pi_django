@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SISTEMA DE GESTÃO DE ESTOQUE</title>
+        <link rel="stylesheet" href="{% static 'css/style-projeto.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/saidaEstoque.css' %}" />
+    </head>
+<body>
+    {{ produtos_data_json|json_script:"produtos-data" }}
+<div class="container">
+    <div class="header">
+        <h1>🏪 SISTEMA DE GESTÃO</h1>
+        <p>CONTROLE DE PRODUTOS E VALIDADE</p>
+    </div>
+    <!-- Título Centralizado -->
+    <div class="nav-bar" id="nav-bar">
+        <nav>
+            <ul class="navegation-menu">
+                <li class="li-navegation-item"><a href="#estatistica" class="nav-link">Estatísticas</a></li>
+
+                <li class="li-navegation-item"><a href="{% url 'produtos:cadastrar' %}#productForm" class="nav-link">Adicionar</a></li>
+
+                <li class="li-navegation-item"><a href="#movimento-estoque   " class="nav-link">Entrada/Saída</a></li>
+
+                <li class="li-navegation-item"><a href="#estoque-atual" class="nav-link" id="btn-estoque-atual">Estoque Atual</a></li>
+            </ul>
+        </nav>
+    </div>
+    {% block stats %}
+    <!-- Seção de Estatísticas -->
+    <div class="stats-section" id="estatistica">
+        <div class="stat-card">
+        <h3>Total de Produtos</h3>
+        <span id="totalProducts"></span>
+    </div>
+    <div class="stat-card warning">
+        <h3>Próximos ao Vencimento</h3>
+        <span id="expiringSoon"></span>
+    </div>
+    <div class="stat-card danger">
+        <h3>Vencidos</h3>
+        <span id="expired"></span>
+    </div>
+    
+</div>
+
+<!-- Seção de Alertas -->
+    <div class="alerts-section">
+        <h2>Alertas de Validade</h2>
+        <div id="alertsList"></div>
+    </div>
+
+<!-- Seção de Controle por Voz -->
+    <div class="voice-control-section">
+        <h2>Comando de Voz</h2>
+        <button id="btn-voz">Falar Comando</button>
+        <p id="feedback">Clique par iniciar o comando de voz!<br>Diga 'parar gravação' para encerrar.</p>
+    </div>
+
+        <div class="voice-control-fixed">
+        <button class="btn-voz-fixed" id="botao-voz-fixed">Falar Comando</button>
+
+    </div>
+
+    <hr />
+    
+{% endblock %}
+
+    
+{% block  content %}
+    
+{% endblock  %}
+    
+        
+    <!-- Seção de Movimentação de Estoque -->
+    <div class="inventory-section">
+        <div class="estoque-controls">
+            <!-- Entrada de Estoque -->
+            <div class="movimento-estoque-form" id="movimento-estoque">
+                <h2>Entrada de Estoque</h2>
+                <form id="formEntradaEstoque" class="form-movimento" method="post" action="{% url 'produtos:entrada_estoque' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <select name="produto_id" id="selectProdutoEntrada" required>
+                            <option value="">Selecione o Produto</option>
+                            {% for produto in produtos %}
+                                <option value="{{ produto.id }}">
+                                    {{ produto.nome }} (Atual: {{ produto.quantidade }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="number" name="quantidade_entrada" id="quantidadeEntrada" 
+                               placeholder="Quantidade" min="1" required>
+                        <button type="submit" class="btn-entrada">Registrar Entrada</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Saída de Estoque -->
+            <div class="movimento-estoque-form">
+                <h2>Saída de Estoque</h2>
+                <form id="formSaidaEstoque" class="form-movimento" method="post" action="{% url 'produtos:saida_estoque' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <select name="produto_id" id="selectProdutoSaida" required>
+                            <option value="">Selecione o Produto</option>
+                            {% for produto in produtos %}
+                                <option value="{{ produto.id }}" data-quantidade="{{ produto.quantidade }}">
+                                    {{ produto.nome }} (Disponível: {{ produto.quantidade }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="number" name="quantidade_saida" id="quantidadeSaida" 
+                               placeholder="Quantidade" min="1" required>
+                        <button type="submit" class="btn-saida">Registrar Saída</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção da Tabela de Estoque -->
+    <div class="inventory-section" id="estoque-atual">
+    <h2>Estoque Atual</h2>
+    <div class="utilidade-estoque">
+        <div class="campo-busca">
+            <input type="text" id="pesquisaEstoque" placeholder="Digite o nome ou Categoria do produto...">
+        </div>
+        <div>
+            <form action="{% url 'produtos:limpar' %}" method="post" >
+            {% csrf_token %}
+                <button type="submit" class="btn-delete" onclick="return confirm('ISSO REMOVERÁ TODOS OS ITENS DO ESTOQUE!!! \n\n DESEJA REALMENTE APAGAR TODO O ESTOQUE?');">Limpar Estoque
+                </button>
+            </form>
+        </div>
+    </div>
+    <div id="resultadosPesquisa" class="resultados-pesquisa-container"></div>
+
+<div class="inventory-table">
+    <table id="inventoryTable">
+        <thead>
+            <tr>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Quantidade</th>
+            <th>Preço</th>
+            <th>Validade</th>
+            <th>Lote</th>
+            <th>Status</th>
+            <th>Ações</th>
+            </tr>
+                
+        </thead>
+        <tbody id="inventoryBody">
+        {% for i in produtos %}
+            <tr data-product-id="{{ i.id }}">
+            <td>{{i.nome}}</td>
+            <td>{{i.categoria}}</td>
+            <td>{{i.quantidade}}</td>
+            <td>{{i.preco_formatado}}</td>
+            <td>{{i.validade|date:'d/m/Y'}}</td>
+            <td>{{i.lote}}</td>
+            <td>
+            {% if i.dias_para_vencer == 0  %}
+                <span style="color: red; font-weight: bold;">VENCE HOJE!</span>
+            {% elif i.esta_vencido%}
+                <span style="color: red; font-weight: bold;">VENCIDO A {{ i.dias_para_vencer|cut:"-" }} DIAS!</span>
+            {% elif i.dias_para_vencer <= 10 %}
+                <span style="color: orange; font-weight: bold;">VENCERÁ EM {{ i.dias_para_vencer }} DIAS!</span>
+            {% else %}
+                <span style="color: green; font-weight: bold;">DENTRO DA VALIDADE!</span>
+            {% endif %}
+                </td>
+                <td>
+                <div class="action-buttons">
+                    <a href="{% url 'produtos:editar' i.id %}" class="btn-edit">Editar</a>
+                    <a href="{% url 'produtos:excluir' i.id %}" class="btn-delete" onclick="return confirm('Tem certeza que deseja excluir o produto: {{ i.nome }}?');">Excluir</a>
+                </div>
+                </td>
+            {% endfor %}
+                </tr>
+        </tbody>
+    </table>
+    
+        <!--Máscara de Input para Data de Validade -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+      
+        <script src= "{% static 'js/estoqueAtual.js' %}"></script>
+        <script src="{% static 'js/formatacao.js' %}"></script>
+        <script src="{% static 'js/comandoVoz.js' %}"></script>
+        <script src="{% static 'js/movimentacaoEstoque.js' %}"></script>
+
+    {% block extra_js %}
+    {% endblock %}
+
+
+  </body>
+</html>

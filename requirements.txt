@@ -1,0 +1,18 @@
+# Dependências principais
+Django==5.2.8  # Framework web
+coverage==7.11.2  # Ferramenta para medir cobertura de testes
+
+# Dependências do Django
+asgiref==3.10.0  # Necessário para Django ASGI
+sqlparse==0.5.3  # Parser SQL para Django
+tzdata==2025.2   # Dados de fuso horário
+
+# Dependências de desenvolvimento (opcional)
+pytest==7.4.3          # Framework de testes
+pytest-django==4.7.0   # Integração pytest com Django
+factory-boy==3.3.0     # Criação de dados para testes
+pytest-cov==4.1.0      # Relatórios de cobertura para pytest
+
+# Dependências de produção (opcional)
+gunicorn==21.2.0       # Servidor WSGI para produção
+python-dotenv==1.0.0   # Gerenciamento de variáveis de ambiente

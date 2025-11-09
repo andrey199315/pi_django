@@ -1,0 +1,89 @@
+.estoque-controls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.movimento-estoque-form {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.movimento-estoque-form h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    text-align: center;
+    color: #333;
+}
+
+.form-movimento {
+    display: flex;
+    justify-content: center;
+}
+
+.form-movimento .form-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.form-movimento select,
+.form-movimento input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-movimento select {
+    flex: 2;
+    min-width: 200px;
+}
+
+.form-movimento input[type="number"] {
+    flex: 1;
+    min-width: 100px;
+}
+
+.btn-entrada,
+.btn-saida {
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    min-width: 120px;
+}
+
+.btn-entrada {
+    background-color: #007bff;
+}
+
+.btn-entrada:hover {
+    background-color: #0056b3;
+}
+
+.btn-saida {
+    background-color: #28a745;
+}
+
+.btn-saida:hover {
+    background-color: #218838;
+}
+
+.btn-entrada:disabled,
+.btn-saida:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}

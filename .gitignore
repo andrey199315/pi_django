@@ -1,0 +1,83 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Ambiente Virtual
+venv/
+.venv/
+env/
+ENV/
+.env
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+static/admin/
+staticfiles/
+
+# Arquivos de teste/cobertura
+.coverage
+.coverage.*
+.pytest_cache/
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# VS Code
+.vscode/
+*.code-workspace
+.history/
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Arquivos temporários
+*.bak
+*.tmp
+*.temp
+
+# Arquivos de ambiente e configuração
+.env
+.env.local
+.env.*.local
+
+# Arquivos de cache
+*.cache
+.cached/
+
+# Diretórios de build
+build/
+dist/
+*.egg-info/
+
+# Node (caso use JavaScript/frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Outros
+*.pid
+*.seed
+*.pid.lock
+.dmypy.json
+dmypy.json

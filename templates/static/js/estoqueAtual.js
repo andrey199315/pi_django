@@ -16,7 +16,7 @@ function AlertaValidade() {
         if (lista_produtos && Array.isArray(lista_produtos.produtos)) {
             lista_produtos = lista_produtos.produtos;
         } else if (lista_produtos && typeof lista_produtos === 'object') {
-            // Converter objeto simples para array de valores (fallback)
+            // Converter objeto simples para array de valores
             lista_produtos = Object.values(lista_produtos);
         } else {
             // Não é um formato esperado

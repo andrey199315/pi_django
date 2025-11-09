@@ -5,41 +5,41 @@ from .models import ProdutoModel
 
 class ProdutoModelTest(TestCase):
     def setUp(self):
-        """Cria um produto para ser usado nos testes"""
+        #Cria um produto
         self.validade = date.today() + timedelta(days=30)
         self.produto = ProdutoModel.objects.create(
             nome='Arroz',
             categoria='alimento',
             quantidade=5,
-            preco=10.50,  # Passando como número ao invés de string
+            preco=10.50,
             validade=self.validade,
             lote='L123'
         )
     
     def test_criacao_produto(self):
-        """Testa se o produto foi criado corretamente"""
+        #Testa se o produto foi criado
         self.assertTrue(isinstance(self.produto, ProdutoModel))
         self.assertEqual(self.produto.nome, 'Arroz')
         
     def test_str_representation(self):
-        """Testa se a representação string do produto está correta"""
+        #Testa se a representação string do produto
         self.assertEqual(str(self.produto), 'Arroz')
         
     def test_produto_properties(self):
-        """Testa as properties do modelo (esta_vencido, dias_para_vencer, preco_formatado)"""
+        #Testa as properties do modelo
         self.assertFalse(self.produto.esta_vencido)
         self.assertEqual(self.produto.dias_para_vencer, 30)
         self.assertEqual(self.produto.preco_formatado, '10,50')
 
 class ProdutoViewTest(TestCase):
     def test_view_cadastro_get(self):
-        """Testa se a página de cadastro carrega corretamente"""
+        #Testa se a página de cadastro carrega
         response = self.client.get(reverse('produtos:cadastrar'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home.html')
         
     def test_view_cadastro_post(self):
-        """Testa se é possível criar um produto via POST"""
+        #Testa se é possível criar um produto via POST
         validade = (date.today() + timedelta(days=90)).isoformat()
         data = {
             'nome': 'Feijão',
@@ -50,13 +50,13 @@ class ProdutoViewTest(TestCase):
             'lote': 'L999'
         }
         response = self.client.post(reverse('produtos:cadastrar'), data)
-        # Verifica se houve redirecionamento (sucesso)
+        # Verifica se houve redirecionamento 200
         self.assertIn(response.status_code, [302, 303])
         # Verifica se o produto foi criado
         self.assertTrue(ProdutoModel.objects.filter(nome='Feijão').exists())
         
     def test_view_entrada_estoque(self):
-        """Testa a funcionalidade de entrada no estoque"""
+        #Testa a funcionalidade de entrada no estoque
         produto = ProdutoModel.objects.create(
             nome='Café',
             categoria='alimento',
@@ -76,7 +76,7 @@ class ProdutoViewTest(TestCase):
         self.assertEqual(produto.quantidade, 15)  # 10 inicial + 5 da entrada
         
     def test_view_saida_estoque(self):
-        """Testa a funcionalidade de saída do estoque"""
+        #Testa a funcionalidade de saída do estoque
         produto = ProdutoModel.objects.create(
             nome='Café',
             categoria='alimento',
@@ -93,4 +93,4 @@ class ProdutoViewTest(TestCase):
         
         # Atualiza o produto do banco
         produto.refresh_from_db()
-        self.assertEqual(produto.quantidade, 7)  # 10 inicial - 3 da saída
+        self.assertEqual(produto.quantidade, 7)

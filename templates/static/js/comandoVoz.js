@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (cleanComando.startsWith("adicionar") || cleanComando.startsWith("inserir")) {
       const fullCommand = cleanComando.replace(/adicionar |inserir /i, "").trim();
       
-      // Extrai dados do comando usando expressões regulares mais flexíveis
+      // Extrai dados do comando usando expressões regulares
       const quantityMatch = fullCommand.match(/quantidade\s+([a-zçãõáéíóúâêô]+|\d+)/i) || 
                            fullCommand.match(/(\d+|[a-zçãõáéíóúâêô]+)\s+(?:unidades?|itens?)/i);
       
@@ -157,8 +157,8 @@ document.addEventListener('DOMContentLoaded', function() {
       const expiry = expiryMatch ? parseVoiceDate(expiryMatch[1]) : null;
       const category = categoryMatch ? categoryMatch[1].trim() : 'Outros';
 
-      // Debug log para ver os valores capturados
-      console.log('Dados capturados:', {
+      /* Debug log para ver os valores capturados
+        console.log('Dados capturados:', {
         comando: fullCommand,
         matches: {
           quantityMatch,
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
           expiry,
           category
         }
-      });
+      });*/
 
       let missingData = [];
       if (!name) missingData.push("nome");
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const cat = (category || 'Outros').toString().toLowerCase().trim();
           let categoryFound = false;
 
-          // Procura por correspondência no texto da opção ou no value (parcial ou exato)
+          // Procura por correspondência no texto da opção ou no value
           for (const opt of categoryField.options) {
             const optText = (opt.text || '').toString().toLowerCase();
             const optValue = (opt.value || '').toString().toLowerCase();
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           }
 
-          // Se não encontrou, tenta igualdade exata (trim)
+          // Se não encontrou, tenta igualdade exata
           if (!categoryFound) {
             const exact = Array.from(categoryField.options).find(o => {
               const t = (o.text || '').toString().toLowerCase().trim();

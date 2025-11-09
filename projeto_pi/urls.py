@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
-from produtos.views import cadastrar_produto  # Importa a view diretamente
+from produtos.views import cadastrar_produto 
 
 urlpatterns = [
-    path('', include('produtos.urls')),  # Inclui as URLs do app na raiz
+    path('', include('produtos.urls')),
     path('admin/', admin.site.urls)
 ]

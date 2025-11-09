@@ -36,7 +36,7 @@ def cadastrar_produto(request:HttpRequest):
 
     contexto = {
         'produtos': produtos,
-        'produtos_data_json': produtos_json_safe, # Para o JS
+        'produtos_data_json': produtos_json_safe, #Para o JS
     }
     
     #instancia o form com a requisicao GET e salva com a requisicao POST
@@ -50,7 +50,7 @@ def cadastrar_produto(request:HttpRequest):
             form.save()
             return redirect('produtos:cadastrar')
         else:
-            # Logar erros para diagnóstico e re-renderizar o template com contexto completo
+            # re-renderizar o template com contexto completo
             logger.error('Form inválido ao cadastrar: %s', form.errors.as_json())
             contexto['form'] = form
             return render(request, 'home.html', contexto)

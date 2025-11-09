@@ -56,12 +56,12 @@ class ProdutoForm(forms.ModelForm):
                 if ',' in value:
                     partes = value.split(',')
                     if len(partes) == 2:
-                        inteiros = partes[0].replace('.', '')  # remover pontos de milhar
-                        decimais = partes[1][:2]  # pegar até 2 casas decimais
+                        inteiros = partes[0].replace('.', '')
+                        decimais = partes[1][:2] 
                         value = f"{inteiros}.{decimais}"
                         return Decimal(value)
                 
-                # Tentar converter direto como último recurso
+                # Tentar converter direto
                 return Decimal(value.replace(',', '.'))
             except (InvalidOperation, ValueError):
                 raise ValidationError('Formato de preço inválido. Use 0,00.')

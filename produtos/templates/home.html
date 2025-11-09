@@ -9,8 +9,6 @@
     </div>
   {% endif %}
     
-    
-      <!-- Seção do Formulário -->
       <form action="{% url 'produtos:cadastrar' %}" method="POST" id="productForm">
         {% csrf_token %}
       <div class="form-section">

@@ -6,7 +6,6 @@
 
 
 {% block content %}
-<!-- Seção do Formulário -->
 <form action="{% url 'produtos:editar' produto.id %}" method="POST" id="productForm">
 {% csrf_token %}
     {% if form.errors %}

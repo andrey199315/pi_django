@@ -1,9 +1,8 @@
 from django.db import models
 from datetime import date
 
-# Create your models here.
 class ProdutoModel(models.Model):
-    #fornecendo as opcoes de categoria
+    #opcoes de categoria
     OPCOES_CATEGORIA = [
             ('alimento', 'Alimento'),
             ('bebida', 'Bebida'),
@@ -24,7 +23,7 @@ class ProdutoModel(models.Model):
     
     @property
     def esta_vencido(self):
-        # Comparamos a data de validade (self.validade) com a data de hoje (date.today())
+        # Compara a data de validade com a data de hoje
         return self.validade <= date.today()
 
     @property
@@ -32,15 +31,11 @@ class ProdutoModel(models.Model):
         hoje = date.today()
         diferenca = self.validade - hoje 
         
-        # Retornamos o número de dias
         return diferenca.days
 
     @property
     def preco_formatado(self):
-        """Retorna o preço formatado no estilo brasileiro: 1.234,56"""
         if self.preco is None:
             return "0,00"
-        # Converter para string com 2 casas decimais
         valor = f"{self.preco:,.2f}"
-        # Trocar ponto por vírgula e vírgula por ponto
         return valor.replace(",", "X").replace(".", ",").replace("X", ".")

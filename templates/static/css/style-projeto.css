@@ -1,6 +1,4 @@
-/*
- * Estilos globais para o corpo da página, fonte e fundo
- */
+/* Estilos globais para o corpo da página, fonte e fundo*/
 
 html{
   scroll-behavior: smooth;
@@ -18,9 +16,7 @@ body {
   overflow-x: auto;
 }
 
-/*
- * Container principal que centraliza o conteúdo
- */
+/* Container principal que centraliza o conteúdo */
 .container {
   max-width: 1400px;
   width: 100%;
@@ -31,9 +27,7 @@ body {
 }
 
 
-/*
- * Estilos para o cabeçalho
- */
+/* Estilos para o cabeçalho */
 .header{
   background: linear-gradient(135deg, #2c3e50, #3498db);
   color: white;
@@ -82,9 +76,7 @@ a.nav-link:hover{
   opacity: 0.9;
 }
 
-/*
- * Estilos para a seção de estatísticas
- */
+/* Estilos para a seção de estatísticas */
 .stats-section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -142,9 +134,7 @@ a.nav-link:hover{
   color: #c0392b;
 }
 
-/*
- * Estilos para o conteúdo principal
- */
+/* Estilos para o conteúdo principal */
 
 .form-section,
 .filter-section,
@@ -193,11 +183,7 @@ a.nav-link:hover{
   transform: translateY(-2px);
 }
 
-/*
- * --------------------------------
- * Estilos de Formulário
- * --------------------------------
- */
+/* Estilos de Formulário */
 .form-group {
   margin-bottom: 20px;
 }
@@ -261,9 +247,7 @@ button[type="button"]:hover {
   background: #7f8c8d;
 }
 
-/*
- * Estilos para a seção de voz
- */
+/* Estilos para a seção de voz */
 .voice-control-section {
   text-align: center;
 }
@@ -274,11 +258,7 @@ button[type="button"]:hover {
   color: #555;
 }
 
-/*
- * --------------------------------
- * Estilos de Tabela
- * --------------------------------
- */
+/* Estilos de Tabela */
 
 .filters {
   display: grid;
@@ -424,7 +404,7 @@ tr:hover {
   color: #155724;
 }
 
-/* Highlight for a row when navigated from alerts */
+/* Highlight para alerts */
 .highlight-row {
   animation: highlightFlash 2.2s ease-in-out;
 }
@@ -491,11 +471,7 @@ tr:hover {
   color: #888;
 }
 
-/*
- * --------------------------------
- * Estilos de Alerta
- * --------------------------------
- */
+/* Estilos de Alertas */
 .alert-item {
   padding: 15px;
   margin-bottom: 10px;
@@ -560,15 +536,11 @@ tr:hover {
   }
 }
 
-/*
- * --------------------------------
- * Responsividade
- * --------------------------------
- */
+/* Responsividade */
 @media (max-width: 768px) {
   body {
     padding: 10px;
-    align-items: flex-start; /* Alinha no topo em telas pequenas */
+    align-items: flex-start;
   }
 
   .container {

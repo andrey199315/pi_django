@@ -12,7 +12,7 @@
       <form action="{% url 'produtos:cadastrar' %}" method="POST" id="productForm">
         {% csrf_token %}
       <div class="form-section">
-        <h2>Adicionar</h2>
+        <h2>Adicionar Produto</h2>
         <div class="form-group">
         {{form.nome.label_tag}} {{form.nome}}
         </div>

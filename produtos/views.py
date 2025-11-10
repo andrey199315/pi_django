@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect,get_object_or_404
-from .forms import ProdutoForm
-from .models import ProdutoModel
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.http import HttpRequest
+from .forms import ProdutoForm
+from .models import ProdutoModel, MovimentacaoEstoque
 import json
 import logging
 
@@ -118,12 +119,22 @@ def saida_estoque(request):
     if request.method == 'POST':
         produto_id = request.POST.get('produto_id')
         quantidade_saida = int(request.POST.get('quantidade_saida', 0))
+        observacao = request.POST.get('observacao', '')
         
         try:
             produto = ProdutoModel.objects.get(id=produto_id)
             if produto.quantidade >= quantidade_saida:
                 produto.quantidade -= quantidade_saida
                 produto.save()
+                
+                # Registra a movimentação
+                MovimentacaoEstoque.objects.create(
+                    produto=produto,
+                    tipo='saida',
+                    quantidade=quantidade_saida,
+                    observacao=observacao
+                )
+                
                 messages.success(request, f'Saída de {quantidade_saida} unidades de {produto.nome} registrada com sucesso!')
             else:
                 messages.error(request, 'Quantidade insuficiente em estoque!')
@@ -138,12 +149,22 @@ def entrada_estoque(request):
     if request.method == 'POST':
         produto_id = request.POST.get('produto_id')
         quantidade_entrada = int(request.POST.get('quantidade_entrada', 0))
+        observacao = request.POST.get('observacao', '')
         
         try:
             produto = ProdutoModel.objects.get(id=produto_id)
             if quantidade_entrada > 0:
                 produto.quantidade += quantidade_entrada
                 produto.save()
+                
+                # Registra a movimentação
+                MovimentacaoEstoque.objects.create(
+                    produto=produto,
+                    tipo='entrada',
+                    quantidade=quantidade_entrada,
+                    observacao=observacao
+                )
+                
                 messages.success(request, f'Entrada de {quantidade_entrada} unidades de {produto.nome} registrada com sucesso!')
             else:
                 messages.error(request, 'A quantidade deve ser maior que zero!')
@@ -153,3 +174,55 @@ def entrada_estoque(request):
             messages.error(request, f'Erro ao registrar entrada: {str(e)}')
             
     return redirect('produtos:cadastrar')
+
+def historico_movimentacoes(request):
+    from datetime import datetime, timedelta
+    from django.db.models import Q
+    
+    # Filtros
+    data_inicio = request.GET.get('data_inicio')
+    data_fim = request.GET.get('data_fim')
+    produto_id = request.GET.get('produto_id')
+    tipo = request.GET.get('tipo')
+    
+    # Query base
+    movimentacoes = MovimentacaoEstoque.objects.select_related('produto').all()
+    
+    # Aplicar filtros
+    if data_inicio:
+        try:
+            data_inicio = datetime.strptime(data_inicio, '%Y-%m-%d')
+            movimentacoes = movimentacoes.filter(data_hora__date__gte=data_inicio)
+        except ValueError:
+            messages.error(request, 'Data inicial inválida')
+    
+    if data_fim:
+        try:
+            data_fim = datetime.strptime(data_fim, '%Y-%m-%d')
+            # Adiciona 1 dia menos 1 segundo para pegar o dia inteiro
+            data_fim = data_fim + timedelta(days=1, seconds=-1)
+            movimentacoes = movimentacoes.filter(data_hora__date__lte=data_fim)
+        except ValueError:
+            messages.error(request, 'Data final inválida')
+    
+    if produto_id:
+        movimentacoes = movimentacoes.filter(produto_id=produto_id)
+    
+    if tipo:
+        movimentacoes = movimentacoes.filter(tipo=tipo)
+    
+    # Lista de produtos para o filtro
+    produtos = ProdutoModel.objects.all()
+    
+    contexto = {
+        'movimentacoes': movimentacoes,
+        'produtos': produtos,
+        'filtros': {
+            'data_inicio': data_inicio.strftime('%Y-%m-%d') if data_inicio else '',
+            'data_fim': data_fim.strftime('%Y-%m-%d') if isinstance(data_fim, datetime) else '',
+            'produto_id': produto_id,
+            'tipo': tipo,
+        }
+    }
+    
+    return render(request, 'historico_movimentacoes.html', contexto)

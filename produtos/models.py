@@ -1,6 +1,26 @@
 from django.db import models
 from datetime import date
 
+class MovimentacaoEstoque(models.Model):
+    TIPO_CHOICES = [
+        ('entrada', 'Entrada'),
+        ('saida', 'Saída'),
+    ]
+    
+    produto = models.ForeignKey('ProdutoModel', on_delete=models.CASCADE, related_name='movimentacoes')
+    tipo = models.CharField(max_length=7, choices=TIPO_CHOICES)
+    quantidade = models.IntegerField()
+    data_hora = models.DateTimeField(auto_now_add=True)
+    observacao = models.TextField(blank=True, null=True)
+    
+    class Meta:
+        ordering = ['-data_hora']
+        verbose_name = 'Movimentação de Estoque'
+        verbose_name_plural = 'Movimentações de Estoque'
+    
+    def __str__(self):
+        return f"{self.get_tipo_display()} de {self.quantidade} unidades de {self.produto.nome}"
+
 class ProdutoModel(models.Model):
     #opcoes de categoria
     OPCOES_CATEGORIA = [

@@ -16,19 +16,25 @@
         <p>CONTROLE DE PRODUTOS E VALIDADE</p>
     </div>
     <!-- Título Centralizado -->
+    {% block nav-bar %}
     <div class="nav-bar" id="nav-bar">
         <nav>
             <ul class="navegation-menu">
-                <li class="li-navegation-item"><a href="#estatistica" class="nav-link">Estatísticas</a></li>
+                <li class="li-navegation-item"><a href="{% url 'produtos:cadastrar' %}" class="nav-link">Home</a></li>
+                
+                <li class="li-navegation-item"><a href="{% url 'produtos:cadastrar' %}#estatistica" class="nav-link">Estatísticas</a></li>
 
                 <li class="li-navegation-item"><a href="{% url 'produtos:cadastrar' %}#productForm" class="nav-link">Adicionar</a></li>
 
-                <li class="li-navegation-item"><a href="#movimento-estoque   " class="nav-link">Entrada/Saída</a></li>
+                <li class="li-navegation-item"><a href="{% url 'produtos:cadastrar' %}#movimento-estoque" class="nav-link">Entrada/Saída</a></li>
 
-                <li class="li-navegation-item"><a href="#estoque-atual" class="nav-link" id="btn-estoque-atual">Estoque Atual</a></li>
+                <li class="li-navegation-item"><a href="{% url 'produtos:cadastrar' %}#estoque-atual" class="nav-link" id="btn-estoque-atual">Estoque Atual</a></li>
+
+                <li class="li-navegation-item"><a href="{% url 'produtos:historico' %}" class="nav-link">Histórico</a></li>
             </ul>
         </nav>
     </div>
+    {% endblock  %}
     {% block stats %}
     <!-- Seção de Estatísticas -->
     <div class="stats-section" id="estatistica">
@@ -74,7 +80,7 @@
     
 {% endblock  %}
     
-        
+        {% block table-storage %}
     <!-- Seção de Movimentação de Estoque -->
     <div class="inventory-section">
         <div class="estoque-controls">
@@ -185,6 +191,7 @@
                 </tr>
         </tbody>
     </table>
+    {% endblock  %}
     
         <!--Máscara de Input para Data de Validade -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

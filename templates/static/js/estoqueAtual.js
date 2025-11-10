@@ -136,6 +136,8 @@ function buscarProdutos(termo) {
     const resultadosDiv = document.getElementById('resultadosPesquisa');
     if (!resultadosDiv) return;
 
+    console.debug('buscarProdutos chamado com termo:', termo);
+
     // Se o termo de busca estiver vazio, limpa os resultados
     if (!termo.trim()) {
         resultadosDiv.innerHTML = '';
@@ -162,13 +164,15 @@ function buscarProdutos(termo) {
                         <span class="produto-preco">R$ ${produto.preco_formatado}</span>
                         <span class="produto-validade">Validade: ${produto.expiry}</span>
                         <span class="produto-lote">Lote: ${produto.lot || "N/A"}</span>
+                        <span class="produto-criado">Adicionado em: ${formatCreatedDate(produto.created)}</span>
                     </div>
                     <div class="produto-acoes">
-                        <a href="/produtos/editar/${produto.id}" class="btn-edit">Editar</a>
-                        <a href="/produtos/excluir/${produto.id}" class="btn-delete" 
+                        <a href="/editar/${produto.id}" class="btn-edit">Editar</a>
+                        <a href="/excluir/${produto.id}" class="btn-delete" 
                            onclick="return confirm('Tem certeza que deseja excluir este produto?');">
                             Excluir
                         </a>
+                        
                     </div>
                 </div>
             `;
@@ -182,10 +186,30 @@ function buscarProdutos(termo) {
     }
 }
 
+// Função utilitária para formatar a data de criação (ISO) para DD/MM/YYYY HH:MM
+function formatCreatedDate(isoString) {
+    if (!isoString) return 'N/A';
+    try {
+        const d = new Date(isoString);
+        if (isNaN(d.getTime())) return 'N/A';
+        const pad = (n) => String(n).padStart(2, '0');
+        const day = pad(d.getDate());
+        const month = pad(d.getMonth() + 1);
+        const year = d.getFullYear();
+        const hours = pad(d.getHours());
+        const minutes = pad(d.getMinutes());
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
+    } catch (e) {
+        return 'N/A';
+    }
+}
+
 // Inicializa as funções quando o documento carrega
 document.addEventListener('DOMContentLoaded', function() {
     AlertaValidade();
     QtdAlertas();
+    
+    console.debug('DOM carregado — inicializando busca e listeners');
     
     // Configura a busca
     const campoBusca = document.getElementById('pesquisaEstoque');

@@ -32,6 +32,7 @@ def cadastrar_produto(request:HttpRequest):
             'days_diff': produto.dias_para_vencer,
             'lot': produto.lote if produto.lote else 'N/A',
             'expiry': produto.validade.isoformat(), 
+            'created': produto.criado_em.isoformat() if getattr(produto, 'criado_em', None) else None,
         })
 
     contexto = {
@@ -71,6 +72,7 @@ def editar_produto(request, id):
             'days_diff': product.dias_para_vencer,
             'lot': product.lote if product.lote else 'N/A',
             'expiry': product.validade.isoformat(), 
+            'created': product.criado_em.isoformat() if getattr(product, 'criado_em', None) else None,
         })
 
     contexto = {

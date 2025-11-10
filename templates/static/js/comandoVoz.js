@@ -51,12 +51,23 @@ document.addEventListener('DOMContentLoaded', function() {
   recognition.continuous = false;
   recognition.interimResults = false;
 
+  let isListening = false;
   btnVoz.addEventListener('click', () => {
-    if (feedback) {
-      feedback.innerHTML = MESSAGE_GUIDE;
-      speak('Ouvindo.');
+    if (!isListening) {
+      if (feedback) {
+        feedback.innerHTML = MESSAGE_GUIDE;
+        speak('Ouvindo.');
+      }
+      recognition.start();
+      isListening = true;
+    } else {
+      if (feedback) {
+        feedback.innerHTML = MESSAGE_GUIDE;
+        speak('encerrado.');
+      }
+      recognition.stop();
+      isListening = false;
     }
-    recognition.start();
   });
 
   // Função para converter data falada em formato ISO

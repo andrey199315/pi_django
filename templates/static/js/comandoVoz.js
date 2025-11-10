@@ -313,6 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
       let nome = comandoSemEntrada;
       if (quantityMatch) {
         nome = comandoSemEntrada.replace(quantityMatch[0], "").trim();
+        speak("Entrada cadastrada com sucesso.");
       }
 
       const quantidade = quantityMatch ? (NUMBER_WORDS[quantityMatch[1].toLowerCase()] || parseInt(quantityMatch[1])) : null;
@@ -354,6 +355,7 @@ document.addEventListener('DOMContentLoaded', function() {
       let nome = comandoSemSaida;
       if (quantityMatch) {
         nome = comandoSemSaida.replace(quantityMatch[0], "").trim();
+        speak("Saída de estoque cadastrada.");
       }
 
       const quantidade = quantityMatch ? (NUMBER_WORDS[quantityMatch[1].toLowerCase()] || parseInt(quantityMatch[1])) : null;

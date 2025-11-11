@@ -39,12 +39,15 @@ Para o comando de voz é utilizada a API **WebKitSpeechRecognition**, a qual nã
 * **Movimentações**: Registra toda entrada e saída de produtos, conta com filtro de busca por dia, nome do produto e tipo de movimentação;
 
 ## Tecnologias Utilizadas
-        As tecnologias usadas no projeto foram:
+As tecnologias usadas no projeto foram:
 * ***Framework Django***: Usado para facilitar o desenvolvimento rápido de aplicações web complexas e orientadas a banco de dados;
+* ***Framework Pytest***: Usado para a realização de pequenos testes.
+* ***Auxiliares de teste***: Foram utilizados algumas bibliotecas e puglins que auxiliam nos testes como por exemple: factory-boy, Faker, pytest-cov, coverage.
 * ***Python***: Usado para a realização da parte lógica do projeto;
 * ***JavaScript***: Usado principalmente para melhorar a experiência do usuário, realizando validações de formulários, busca dinâmica, formatação de conteúdo, alertas visuais e acessibilidade por comando de voz. 
 * ***HTML***: Utilizado para estruturar as páginas web;
 * ***CSS***: Usado para a estilização das páginas web;
+
 
 ## Como utilizar
 (Estarei assumindo a utilização do VS Code como IDE)

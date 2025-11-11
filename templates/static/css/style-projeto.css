@@ -41,8 +41,8 @@ body {
   background-color: #2c3e50;
   width:100%;
   height: 2em;
-
 }
+
 ul.navegation-menu{
   list-style-type: none;
   margin: 0;
@@ -51,7 +51,9 @@ ul.navegation-menu{
   background-color: #2c3e50;
   display: flex;
   justify-content: space-evenly;
+  flex-grow: 1;
 }
+
 a.nav-link{
   color: white;
   text-decoration: none;
@@ -578,3 +580,4 @@ tr:hover {
     padding: 8px;
   }
 }
+
